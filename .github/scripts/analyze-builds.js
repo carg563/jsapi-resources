@@ -102,7 +102,7 @@ const execLogErr = async (command) => {
     const outputPath = resolve(METRICS_PATH, `${jsapiVersion}.csv`);
     const stream = createWriteStream(outputPath);
     stream.write(
-      "Sample,Build size (MB),Build file count,Main bundle file,Main bundle size (MB),Main bundle gzipped size (MB),Main bundle brotli compressed size (MB),Load time (ms), Total runtime (ms), Loaded size (MB), JS heap size (MB)\n"
+      "Sample,Build size (MB),Build file count,Main bundle file,Main bundle size (MB),Main bundle gzipped size (MB),Main bundle brotli compressed size (MB),Load time (ms),Total runtime (ms),Loaded size (MB),Total JS requests,JS heap size (MB)\n"
     );
 
     for (const [itemCount, sample] of sampleDirectories.entries()) {
@@ -151,7 +151,7 @@ const execLogErr = async (command) => {
       const pageTotalMB = (perfResults.pageTotalBytes / 1024 ** 2).toFixed(2);
       const JSHeapUsedSizeMB = (perfResults.JSHeapUsedSizeBytes / 1024 ** 2).toFixed(2);
 
-      const output = `${sampleName} ${packageVersion},${buildSizeMB},${buildFileCount},${mainBundleName},${mainBundleSizeMB},${mainBundleSizeGzipMB},${mainBundleSizeBrotliMB},${perfResults.elapsedRuntimeMS},${perfResults.totalScriptTimeMS},${pageTotalMB},${JSHeapUsedSizeMB}\n`;
+      const output = `${sampleName} ${packageVersion},${buildSizeMB},${buildFileCount},${mainBundleName},${mainBundleSizeMB},${mainBundleSizeGzipMB},${mainBundleSizeBrotliMB},${perfResults.elapsedRuntimeMS},${perfResults.totalScriptTimeMS},${pageTotalMB},${perfResults.totalJSRequests},${JSHeapUsedSizeMB}\n`;
 
       console.log("Writing results to CSV:", output);
       stream.write(output);
